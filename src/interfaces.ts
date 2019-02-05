@@ -21,6 +21,6 @@ export interface Data {
 }
 
 export interface IDataProvider {
-  getData(): Data;
+  getData(): Promise<Data>;
   saveData(data: Data): void;
 }

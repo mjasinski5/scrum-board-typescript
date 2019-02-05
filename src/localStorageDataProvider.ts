@@ -1,20 +1,22 @@
 import { IDataProvider, Data } from './interfaces';
-let entries = require("./entries.json");
+import axios from 'axios';
 
 export default class DataProvider implements IDataProvider {
     
     private transformToData(data: any) : Data{
         if(!data) return {} as Data;
-        console.log('data', data)
+
         return data as Data;
     }
 
-    getData() : Data {
+    async getData() : Promise<Data> {
         const localStorageData = localStorage.getItem('localState');
 
         if(!localStorageData) {
-            return this.transformToData(entries);
+            const data = (await axios.get('entries.json')).data
+            return this.transformToData(data);
         }
+        
         return this.transformToData(JSON.parse(localStorageData));
     }
 

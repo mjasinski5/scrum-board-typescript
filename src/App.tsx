@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -14,7 +13,6 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Hidden from "@material-ui/core/Hidden";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import Markdown from "./Markdown";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
@@ -22,7 +20,6 @@ import CheckBoxEmpty from "@material-ui/icons/CheckBoxOutlineBlankRounded";
 import CheckBoxRounded from "@material-ui/icons/CheckBoxRounded";
 import Avatar from "@material-ui/core/Avatar";
 import { IDataProvider, Data } from "./interfaces";
-let entries = require("./entries.json");
 
 const styles = (theme: any) => ({
   layout: {
@@ -101,11 +98,9 @@ class Blog extends React.Component<PropType, IState> {
       data: {} as Data,
     };
   }
-  private async getData() {
-    return entries;
-  }
+
   async componentDidMount() {
-    const localState = this.props.dataProvider.getData();
+    const localState = await this.props.dataProvider.getData();
 
     this.setState({
       data: localState
@@ -125,7 +120,6 @@ class Blog extends React.Component<PropType, IState> {
       (releaseDate - nowDate) / (1000 * 60 * 60)
     );
     const calculatedDays = Math.round(calculatedHours / 24);
-    console.log(calculatedDays);
 
     return (
       <React.Fragment>
