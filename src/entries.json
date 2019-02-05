@@ -1,0 +1,36 @@
+{
+  "teamName": "Wookiees",
+  "releases": [
+    {
+      "name": "Warszawa",
+      "date": "Mon Feb 11 2019",
+      "themes": ["Theme1", "Theme2"],
+      "sprints": [
+        {
+          "name": "Sprint Rozpierdol",
+          "date": "Mon Feb 11 2019",
+          "goals": [
+            {
+              "description": "To be able to demo new AssetStore concept.",
+              "done": false
+            }
+          ]
+        },
+        {
+          "name": "Sprint Relax",
+          "date": "Mon Feb 11 2019",
+          "goals": [
+            {
+              "description": "To be able to demo new AssetStore concept.",
+              "done": false
+            },
+            {
+              "description": "sprintgoal2",
+              "done": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
