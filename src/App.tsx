@@ -19,7 +19,7 @@ import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import CheckBoxEmpty from "@material-ui/icons/CheckBoxOutlineBlankRounded";
 import CheckBoxRounded from "@material-ui/icons/CheckBoxRounded";
 import Avatar from "@material-ui/core/Avatar";
-import { IDataProvider, Data } from "./interfaces";
+import { IDataProvider, Data, Team } from "./interfaces";
 
 const styles = (theme: any) => ({
   layout: {
@@ -85,10 +85,12 @@ const styles = (theme: any) => ({
 interface PropType {
   classes: any;
   dataProvider: IDataProvider;
+  match: any;
   // releases: any;
 }
 interface IState {
   data: Data;
+  currentRelease: string;
 }
 
 class Blog extends React.Component<PropType, IState> {
@@ -96,31 +98,47 @@ class Blog extends React.Component<PropType, IState> {
     super(props);
     this.state = {
       data: {} as Data,
+      currentRelease: ''
     };
+
   }
 
   async componentDidMount() {
     const localState = await this.props.dataProvider.getData();
 
     this.setState({
-      data: localState
+      data: localState,
     });
+  }
+  private getCurrentTeam(team: string): 0 | Team | undefined {
+    return  this.state.data.releases &&
+    this.state.data.releases.length &&
+    this.state.data.releases[0].teams.find(el => el.name === team)
   }
 
   render() {
+    console.log('props', this.props.match.params.team)
+    const currentTeam = this.props.match.params.team;
     const classes = this.props.classes;
-    const sprints = this.state.data.releases && this.state.data.releases.length && this.state.data.releases[0].sprints;
+    const team = this.getCurrentTeam(currentTeam);
+    const sprints = team && team.sprints;
+    console.log('sprints', sprints)
+    console.log('team', team)
     const data = this.state.data;
-    const releaseName = (data.releases && data.releases.length && data.releases[0].name) || "";
+    const releaseName =
+      (data.releases && data.releases.length && data.releases[0].name) || "";
     const releaseDate =
-      (data.releases && data.releases.length && new Date(data.releases[0].date).getTime()) ||
+      (data.releases &&
+        data.releases.length &&
+        new Date(data.releases[0].date).getTime()) ||
       new Date().getTime();
     const nowDate = new Date().getTime();
     const calculatedHours = Math.round(
       (releaseDate - nowDate) / (1000 * 60 * 60)
     );
     const calculatedDays = Math.round(calculatedHours / 24);
-
+    const teamReleaseGoals = team && team.releaseGoals || []
+    console.log('teamReleaseGoals', teamReleaseGoals)
     return (
       <React.Fragment>
         <CssBaseline />
@@ -143,68 +161,115 @@ class Blog extends React.Component<PropType, IState> {
                 </Typography>
               </div>
             </Paper>
-            <Button variant="contained" color="primary" className={classes.button}>
-        Primary
-      </Button>
-            {/* <Grid container direction="column">
-              <Grid container direction="row" spacing={40} className={classes.cardGrid}>
-                <Grid item key="123" xs={12} md={6}>
-                
-                </Grid>
-                <Grid item key="1233" xs={12} md={6}>dupa2 </Grid>
-              </Grid>
-            </Grid> */}
             <Grid
               container
               direction="row"
               spacing={40}
               className={classes.cardGrid}
             >
-              {sprints && sprints.map((post: any) => (
-                <Grid item key={post.name} xs={12} md={6}>
-                  <Card className={classes.card}>
-                    <div className={classes.cardDetails}>
-                      <CardContent>
-                        <Typography component="h2" variant="h5">
-                          {post.name}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                          {post.date}
-                        </Typography>
-                        <Typography variant="subtitle1" paragraph>
-                          <List>
-                            {post.goals.map((g: any) => {
-                              return (
-                                <ListItem key={g.description}>
-                                  <Avatar>
-                                    <CheckBoxEmpty
-                                      onClick={() => {
-                                        // const nReleases = this.state.releases.find((s) => s.)
-                                        // this.setState({
-                                        //   ...this.state,
-                                        //   releases: releases
-                                        // })
-                                      }}
-                                    />
-                                  </Avatar>
-                                  <ListItemText primary={g.description} />
-                                </ListItem>
-                              );
-                            })}
-                          </List>
-                        </Typography>
-                      </CardContent>
-                    </div>
-                    <Hidden xsDown>
-                      <CardMedia
-                        className={classes.cardMedia}
-                        image="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22288%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20288%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_164edaf95ee%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_164edaf95ee%22%3E%3Crect%20width%3D%22288%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.32500076293945%22%20y%3D%22118.8%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" // eslint-disable-line max-len
-                        title="Image title"
-                      />
-                    </Hidden>
-                  </Card>
-                </Grid>
-              ))}
+              <Grid container direction="column">
+                {sprints &&
+                  sprints.map((post: any) => (
+                    <Grid item key={post.name} xs={12} md={6}>
+                      <Card className={classes.card}>
+                        <div className={classes.cardDetails}>
+                          <CardContent>
+                            <Typography component="h2" variant="h5">
+                              {post.name}
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              color="textSecondary"
+                            >
+                              {post.date}
+                            </Typography>
+                            <Typography variant="subtitle1" paragraph>
+                              <List>
+                                {post.goals.map((g: any) => {
+                                  return (
+                                    <ListItem key={g.description}>
+                                      <Avatar>
+                                        <CheckBoxEmpty
+                                          onClick={() => {
+                                            // const nReleases = this.state.releases.find((s) => s.)
+                                            // this.setState({
+                                            //   ...this.state,
+                                            //   releases: releases
+                                            // })
+                                          }}
+                                        />
+                                      </Avatar>
+                                      <ListItemText primary={g.description} />
+                                    </ListItem>
+                                  );
+                                })}
+                              </List>
+                            </Typography>
+                          </CardContent>
+                        </div>
+                        <Hidden xsDown>
+                          <CardMedia
+                            className={classes.cardMedia}
+                            image="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22288%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20288%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_164edaf95ee%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_164edaf95ee%22%3E%3Crect%20width%3D%22288%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.32500076293945%22%20y%3D%22118.8%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" // eslint-disable-line max-len
+                            title="Image title"
+                          />
+                        </Hidden>
+                      </Card>
+                    </Grid>
+                  ))}
+                {teamReleaseGoals.length && (
+                  <Grid container direction="column">
+                    <Grid item key="12345667" xs={12} md={6}>
+                      <Card className={classes.card}>
+                        <div className={classes.cardDetails}>
+                          <CardContent>
+                            <Typography component="h2" variant="h5">
+                              Release Goals
+                            </Typography>
+                            <Typography
+                              variant="subtitle1"
+                              color="textSecondary"
+                            >
+                              ---
+                            </Typography>
+                            <Typography variant="subtitle1" paragraph>
+                              <List>
+                                {teamReleaseGoals.map((g) => {
+                                  return (
+                                    <ListItem key={g.name}>
+                                      <Avatar>
+                                        <CheckBoxEmpty
+                                          onClick={() => {
+                                            // const nReleases = this.state.releases.find((s) => s.)
+                                            // this.setState({
+                                            //   ...this.state,
+                                            //   releases: releases
+                                            // })
+                                          }}
+                                        />
+                                      </Avatar>
+                                      <ListItemText primary={g.name} />
+                                    </ListItem>
+                                  );
+                                })
+                              }
+                              </List>
+                            </Typography>
+                          </CardContent>
+                        </div>
+                        <Hidden xsDown>
+                          <CardMedia
+                            className={classes.cardMedia}
+                            image="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22288%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20288%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_164edaf95ee%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_164edaf95ee%22%3E%3Crect%20width%3D%22288%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2296.32500076293945%22%20y%3D%22118.8%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" // eslint-disable-line max-len
+                            title="Image title"
+                          />
+                        </Hidden>
+                      </Card>
+                    </Grid>
+                    <Divider variant="middle" />
+                  </Grid>
+                )}
+              </Grid>
             </Grid>
           </main>
         </div>

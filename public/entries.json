@@ -1,32 +1,47 @@
 {
-  "teamName": "Wookiees",
+  "productName": "Kyma",
   "releases": [
     {
       "name": "Warszawa",
       "date": "Mon Feb 11 2019",
-      "themes": ["Theme1", "Theme2"],
-      "sprints": [
+      "themes": ["Theme1", "Theme2", "Theme2"],
+      "teams": [
         {
-          "name": "Sprint Rozpierdol",
-          "date": "Mon Feb 11 2019",
-          "goals": [
+          "name": "wookiee",
+          "releaseGoals": [
             {
-              "description": "To be able to demo new AssetStore concept.",
-              "done": false
-            }
-          ]
-        },
-        {
-          "name": "Sprint Relax",
-          "date": "Mon Feb 11 2019",
-          "goals": [
-            {
-              "description": "To be able to demo new AssetStore concept.",
+              "name": "Theme1",
               "done": false
             },
             {
-              "description": "sprintgoal2",
+              "name": "Theme2",
               "done": false
+            }
+          ],
+          "sprints": [
+            {
+              "name": "Sprint Rozpierdol",
+              "date": "Mon Feb 11 2019",
+              "goals": [
+                {
+                  "description": "To be able to demo new AssetStore concept.",
+                  "done": false
+                }
+              ]
+            },
+            {
+              "name": "Sprint Relax",
+              "date": "Mon Feb 11 2019",
+              "goals": [
+                {
+                  "description": "To be able to demo new AssetStore concept.",
+                  "done": false
+                },
+                {
+                  "description": "sprintgoal2",
+                  "done": false
+                }
+              ]
             }
           ]
         }

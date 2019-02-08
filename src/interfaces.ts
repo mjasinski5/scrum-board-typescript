@@ -1,22 +1,34 @@
-interface Goal {
+export interface ReleaseGoal {
+  name: string;
+  done: boolean;
+}
+
+export interface Goal {
   description: string;
   done: boolean;
 }
 
-interface Sprint {
+export interface Sprint {
   name: string;
   date: string;
   goals: Goal[];
 }
-interface Release {
+
+export interface Team {
+  name: string;
+  releaseGoals: ReleaseGoal[];
+  sprints: Sprint[];
+}
+
+export interface Release {
   name: string;
   date: string;
   themes: string[];
-  sprints: Array<Sprint>;
+  teams: Team[];
 }
 
 export interface Data {
-  teamName: string;
+  productName: string;
   releases: Release[];
 }
 
