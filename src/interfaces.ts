@@ -22,7 +22,8 @@ export interface Team {
 
 export interface Release {
   name: string;
-  date: string;
+  startDate: string;
+  endDate: string;
   themes: string[];
   teams: Team[];
 }
@@ -33,6 +34,12 @@ export interface Data {
 }
 
 export interface IDataProvider {
-  getData(): Promise<Data>;
+  getData(url?: string): Promise<Data>;
   saveData(data: Data): void;
 }
+
+
+export interface IClasses {
+  classes: any;
+}
+

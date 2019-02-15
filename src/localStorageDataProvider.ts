@@ -9,11 +9,12 @@ export default class DataProvider implements IDataProvider {
         return data as Data;
     }
 
-    async getData() : Promise<Data> {
+    async getData(url?: string) : Promise<Data> {
         const localStorageData = localStorage.getItem('localState');
+        const dataUrl = url || 'entries.json';
 
         if(!localStorageData) {
-            const data = (await axios.get('entries.json')).data
+            const data = (await axios.get(dataUrl)).data
             return this.transformToData(data);
         }
         
@@ -22,6 +23,6 @@ export default class DataProvider implements IDataProvider {
 
     saveData(data : Data) : void {
         localStorage.setItem('localState', JSON.stringify(data));
-    }
+    }   
 }
 
