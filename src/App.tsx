@@ -187,7 +187,6 @@ class Blog extends React.Component<PropType, IState> {
   }
 
   render() {
-    console.log("state", this.props.location.search);
     const currentTeam = this.props.match.params.team;
     const { classes } = this.props;
     const team = this.getCurrentTeam(currentTeam);
@@ -217,31 +216,26 @@ class Blog extends React.Component<PropType, IState> {
     return (
       <React.Fragment>
         <CssBaseline />
-        <FormControl className={classes.formControl} variant="filled" />
+        <div className={classes.layout}>
+          <main>
+          <FormControl className={classes.formControl} variant="filled" />
         <InputLabel htmlFor="component-filled">Data URL</InputLabel>
         <FilledInput
           id="component-filled"
           value={this.state.dataUrl}
           onChange={event => this.setState({ dataUrl: event.target.value })}
         />
-        <label htmlFor="contained-button-file">
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            Primary
-          </Button>
-        </label>
-        <Board
-          classes={classes}
-          teamReleaseGoals={teamReleaseGoals}
-          sprints={sprints}
-          releaseName={releaseName}
-          calculatedHours={calculatedHours}
-          currentRelease={currentRelease}
-        />
-        <Footer classes={classes} />
+            <Board
+              classes={classes}
+              teamReleaseGoals={teamReleaseGoals}
+              sprints={sprints}
+              releaseName={releaseName}
+              calculatedHours={calculatedHours}
+              currentRelease={currentRelease}
+            />
+            <Footer classes={classes} />
+          </main>
+        </div>
       </React.Fragment>
     );
   }
