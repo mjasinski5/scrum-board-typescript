@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/scrum-board-typescript/precache-manifest.7d19db3174305292758d449b6e523a1d.js"
+  "/scrum-board-typescript/precache-manifest.33ca8cc60bc4d430396d13d8cd3186bd.js"
 );
 
 workbox.clientsClaim();
