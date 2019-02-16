@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/scrum-board-typescript/static/js/runtime~main.33cf470f.js"
   },
   {
-    "revision": "554be021aa7bacc0f864",
-    "url": "/scrum-board-typescript/static/js/main.554be021.chunk.js"
+    "revision": "b2d1e80ee33ad5a13bcf",
+    "url": "/scrum-board-typescript/static/js/main.b2d1e80e.chunk.js"
   },
   {
     "revision": "5c5b1fa5609947cfd0ea",
     "url": "/scrum-board-typescript/static/js/1.5c5b1fa5.chunk.js"
   },
   {
-    "revision": "1a6a838d9ce06c4e1f9cfe1198a06c54",
+    "revision": "923d86ab06d7cfdc1ba97dd23ac70be7",
     "url": "/scrum-board-typescript/index.html"
   }
 ];
